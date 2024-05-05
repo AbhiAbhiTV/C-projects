@@ -1,25 +1,24 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -g
-LDFLAGS = -pthread
+# Makefile for the CMSC257 Project1
+#
 
-# List of source files
-SRCS = shellex.c csapp.c
+# Make environment
+CC=gcc
+CFLAGS= -c -g -Wall $(INCLUDES)
 
-# List of object files
-OBJS = $(SRCS:.c=.o)
+# Files
+OBJECT_FILES=	p1.o p1-support.o
 
-# Target executable
-TARGET = sh257
+# Productions
+all : cmsc257-p1
 
-.PHONY: all clean
+cmsc257-p1 : $(OBJECT_FILES)
+	$(CC)  $(OBJECT_FILES) -o $@ 
 
-all: $(TARGET)
+p1.o : cmsc257-p1.c p1-support.h
+	$(CC) $(CFLAGS) $< -o $@
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+p1-support.o : p1-support.c p1-support.h 
+	$(CC) $(CFLAGS) $< -o $@
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-
-clean:
-	$(RM) $(TARGET) $(OBJS)
+clean : 
+	rm -v cmsc257-p1 $(OBJECT_FILES)
